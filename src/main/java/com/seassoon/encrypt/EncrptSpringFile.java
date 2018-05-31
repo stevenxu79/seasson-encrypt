@@ -14,8 +14,11 @@ package com.seassoon.encrypt;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**   
  * @ClassName:  EncrptSpringFile   
@@ -29,12 +32,12 @@ import java.nio.charset.Charset;
 public class EncrptSpringFile {
 	
 	
-	native byte[] encrypt(byte[] _buf, byte[] key, byte[] keyorg);
-	
-	static {
-		System.out.println(System.getProperty("java.library.path"));
-		System.loadLibrary("libEncJarLib");
-	}
+//	native byte[] encrypt(byte[] _buf, byte[] key, byte[] keyorg);
+//	
+//	static {
+//		System.out.println(System.getProperty("java.library.path"));
+//		System.loadLibrary("libEncJarLib");
+//	}
 
 	
 	/**
@@ -47,18 +50,31 @@ public class EncrptSpringFile {
 	 */
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String fileName1="rpl/classes/org/springframework/core/LocalVariableTableParameterNameDiscoverer.class";
-		String fileName2="rpl/classes/org/springframework/core/type/classreading/SimpleMetadataReader.class";
-		File readFile1=new File(fileName1);
-		byte[] bytes_tmp1=getFileBytes(readFile1);
-		System.err.println("read len2="+bytes_tmp1.length);
-		EncrptSpringFile coder = new EncrptSpringFile();
-		byte[] key= {33, -49, -77, 49, 106, -5, -99, 0, -5, -72};//保存KEY
-		String keyOrg="suichaojar";
-		System.out.println("enckeyOrg Str:"+keyOrg);	
-		Charset charset = Charset.forName("UTF-8");
-		byte[] keyOrgBytes=keyOrg.getBytes(charset);
-		byte[] bytes = coder.encrypt(bytes_tmp1,key,keyOrgBytes);// 加密CLASS
+		List<String> fileNames = new ArrayList();
+		fileNames.add("rpl_org/classes/org/springframework/core/LocalVariableTableParameterNameDiscoverer.class");
+		fileNames.add("rpl_org/classes/org/springframework/core/LocalVariableTableParameterNameDiscoverer$ParameterNameDiscoveringVisitor.class");
+		fileNames.add("rpl_org/classes/org/springframework/core/LocalVariableTableParameterNameDiscoverer$LocalVariableTableVisitor.class");
+		fileNames.add("rpl_org/classes/org/springframework/core/type/classreading/SimpleMetadataReader.class");
+		fileNames.add("rpl_org/classes/org/springframework/core/type/classreading/SimpleMetadataReaderFactory.class");
+		for (String fileName : fileNames) {
+			System.out.println("fileName="+fileName);
+			File readFile=new File(fileName);
+			byte[] bytes_tmp1=getFileBytes(readFile);
+			System.err.println("read len2="+bytes_tmp1.length);
+			EncryptJar coder = new EncryptJar();
+			byte[] key= {33, -49, -77, 49, 106, -5, -99, 0, -5, -72};//保存KEY
+			String keyOrg="suichaojar";
+			System.out.println("enckeyOrg Str:"+keyOrg);	
+			Charset charset = Charset.forName("UTF-8");
+			byte[] keyOrgBytes=keyOrg.getBytes(charset);
+			byte[] bytes = coder.encrypt(bytes_tmp1,key,keyOrgBytes);// 加密CLASS
+			String saveFileName=fileName.replace("rpl_org", "rpl");
+			System.err.println("saveFileName="+saveFileName);
+			writeFile(saveFileName, bytes);
+		}
+		
+		
+		
 	}
 
 	public static byte[] getFileBytes(File file) throws IOException {
@@ -75,4 +91,17 @@ public class EncrptSpringFile {
 		buffer = bos.toByteArray();
 		return buffer;
 	}
+	
+	public static void writeFile( String fileName, byte[] content)  
+	        throws IOException {  
+	    try {  	      
+	        FileOutputStream fos = new FileOutputStream(fileName);  
+	        fos.write(content);  
+	        fos.close();  
+	    } catch (IOException e) {  
+	        throw new RuntimeException(e);  
+	    }  
+	}  
+	
+	
 }

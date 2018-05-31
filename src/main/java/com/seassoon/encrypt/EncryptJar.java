@@ -43,11 +43,11 @@ import java.util.zip.ZipEntry;
 public class EncryptJar {	
 	native byte[] genEncKey(byte[] keyorg);
 	native byte[] encrypt(byte[] _buf, byte[] key, byte[] keyorg);
-	native byte[] decrypt(byte[] _buf, byte[] key, byte[] keyorg);
+//	native byte[] decrypt(byte[] _buf, byte[] key, byte[] keyorg);
 	static {
 		System.out.println(System.getProperty("java.library.path"));
 		System.loadLibrary("libEncJarLib");
-		System.loadLibrary("libDecJarLib");
+//		System.loadLibrary("libDecJarLib");
 	}
 	
 	static String springClass = "SimpleMetadataReader";
@@ -277,6 +277,11 @@ public class EncryptJar {
 							File readFile=new File(readFileName);
 							bytes_tmp=getFileBytes(readFile);
 //							System.err.println("read len2="+bytes_tmp.length);
+							
+							JarEntry ne = new JarEntry(name);
+							dst_jar.putNextEntry(ne);
+							dst_jar.write(bytes_tmp);
+							
 						} else {
 							ByteArrayOutputStream baos = new ByteArrayOutputStream();
 							BufferedInputStream is = new BufferedInputStream(src_jar.getInputStream(entry));
@@ -288,23 +293,13 @@ public class EncryptJar {
 							bytes_tmp = baos.toByteArray();
 //							System.err.println("read len2="+bytes_tmp.length);
 							baos.close();
+							EncryptJar coder = new EncryptJar();
+							byte[] bytes = coder.encrypt(bytes_tmp,key,keyOrg);// 加密CLASS
+							
+							JarEntry ne = new JarEntry(name);
+							dst_jar.putNextEntry(ne);
+							dst_jar.write(bytes);
 						}
-
-						
-						// System.err.println("bytelen1=" + bytes_tmp.length);
-//						EncryptSuichao coder = new EncryptSuichao();
-//						byte[] bytes = coder.encrypt(bytes_tmp);// 加密CLASS
-						EncryptJar coder = new EncryptJar();
-						byte[] bytes = coder.encrypt(bytes_tmp,key,keyOrg);// 加密CLASS
-						// System.err.println("bytelen2=" + bytes.length);						
-						JarEntry ne = new JarEntry(name);
-//						String name_encrypt=name.substring(0,name.lastIndexOf("."))+".xujw";
-//						String name_encrypt=name.substring(0,name.lastIndexOf("."))+".class";
-//						JarEntry ne = new JarEntry(name_encrypt);
-						dst_jar.putNextEntry(ne);
-						dst_jar.write(bytes);
-
-						// baos.reset();
 						
 						
 						dst_jar.closeEntry();
@@ -404,6 +399,7 @@ public class EncryptJar {
 //		String src_name="F:\\BaiduNetdiskDownload\\随巢部署相关文件-验证加密\\程序\\spark-shell\\suichao-spark-shell.jar";
 //		String src_name="E:\\STS_WORKSPACE\\SUICHAO\\suichao-ms-3\\encSpringTest\\target\\encSpringTest-0.0.1-SNAPSHOT.jar";
 		
+		//suichao3.0
 //		String src_name="F:\\suichao-files\\files\\spark\\profile_task\\suichao-spark-shell.jar";
 //		String src_name="F:\\suichao-files\\files\\spark\\interactive_task\\suichao-spark-shell.jar";
 		
