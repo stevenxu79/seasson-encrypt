@@ -52,12 +52,14 @@ public class EncryptJar {
 	
 	static String springClass = "SimpleMetadataReader";
 	static String springClass2 ="LocalVariableTableParameterNameDiscoverer";
-	static String notStr="$";
+//	static String notStr="$";
+	static String notCheckStr="$$";
 	static String projectStr = "GetDDL";
 //	static String projectStr2 = "org/eclipse/jdt/internal/jarinjarloader";
 	static String projectStr2 = "com/seassoon";
 	
 	static String springJar = "spring-core";
+	static String suichaoJar="microservice-";
 	// 获取参数
 	static Map<String, String> getArgMap(String[] args) {
 		Map<String, String> map = new HashMap<>();
@@ -111,15 +113,16 @@ public class EncryptJar {
 	public static boolean isEncrypt(String name) {
 		
 		if (name != null) {
-			if (name.endsWith(".class") && name.indexOf(notStr) == -1 ) {
-				
+//			if (name.endsWith(".class") && name.indexOf(notStr) == -1 ) {
+//			if (name.endsWith(".class") ) {
+			if (name.endsWith(".class") && name.indexOf(notCheckStr) == -1 ) {
 				if (name.indexOf(projectStr) != -1 ||name.indexOf(projectStr2) != -1 || name.indexOf(springClass) != -1 || name.indexOf(springClass2) != -1) {
-					System.err.println("encrypt is true!!");
+//					System.err.println("encrypt is true!!");
 					return true;
 				}
 			}
 			if (name.endsWith(".jar")) {
-				if (name.indexOf(springJar) != -1) {
+				if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1) {
 					return true;
 				}
 			}
@@ -258,7 +261,7 @@ public class EncryptJar {
 			long size = entry.getSize();
 			// 压缩后的大小
 			long compressedSize = entry.getCompressedSize();
-			// System.out.println(name + "\t" + size + "\t" + compressedSize);
+//			 System.out.println(name + "\t" + size + "\t" + compressedSize);
 			if (isEncrypt(name)) {
 				System.out.println("encrypt " + name);
 				if (name.endsWith(".class")) {
@@ -273,7 +276,7 @@ public class EncryptJar {
 							System.out.println("readFile="+readFileName);
 							File readFile=new File(readFileName);
 							bytes_tmp=getFileBytes(readFile);
-							System.err.println("read len2="+bytes_tmp.length);
+//							System.err.println("read len2="+bytes_tmp.length);
 						} else {
 							ByteArrayOutputStream baos = new ByteArrayOutputStream();
 							BufferedInputStream is = new BufferedInputStream(src_jar.getInputStream(entry));
@@ -283,7 +286,7 @@ public class EncryptJar {
 							}
 							is.close();
 							bytes_tmp = baos.toByteArray();
-							System.err.println("read len2="+bytes_tmp.length);
+//							System.err.println("read len2="+bytes_tmp.length);
 							baos.close();
 						}
 
@@ -312,6 +315,7 @@ public class EncryptJar {
 					}
 
 				} else if (name.endsWith(".jar")) {
+
 					// 获得实体流
 					InputStream is = src_jar.getInputStream(entry);
 
@@ -355,6 +359,9 @@ public class EncryptJar {
 					
 					//删除临时文件夹
 					deleteDirectory(tmpDir);
+				
+//					if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1) {}
+					
 				}
 
 			} else {
@@ -396,6 +403,23 @@ public class EncryptJar {
 //		String src_name="F:\\BaiduNetdiskDownload\\随巢部署相关文件-验证加密\\程序\\govern\\suichao-govern.jar";
 //		String src_name="F:\\BaiduNetdiskDownload\\随巢部署相关文件-验证加密\\程序\\spark-shell\\suichao-spark-shell.jar";
 //		String src_name="E:\\STS_WORKSPACE\\SUICHAO\\suichao-ms-3\\encSpringTest\\target\\encSpringTest-0.0.1-SNAPSHOT.jar";
+		
+//		String src_name="F:\\suichao-files\\files\\spark\\profile_task\\suichao-spark-shell.jar";
+//		String src_name="F:\\suichao-files\\files\\spark\\interactive_task\\suichao-spark-shell.jar";
+		
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\auth\\auth-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\catalog\\suichao-catalog-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\dataoverview\\suichao-dataoverview-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\datausage\\datausage-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\datawarngling\\datawarngling-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\govern\\govern-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\project\\project-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\system\\suichao-system-3.1.0.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\app\\understand\\understand-3.1.0.jar";
+		
+//		String src_name="F:\\suichao-files\\files\\microservices\\gateway\\eureka\\eureka_server.jar";
+//		String src_name="F:\\suichao-files\\files\\microservices\\gateway\\zuul\\service-zuul.jar";
+		
 		if (src_name == null) {
 			System.out.println("usage: java Encrypt -src xxx.jar");
 			return;
@@ -418,7 +442,7 @@ public class EncryptJar {
 		System.out.println("keyOrgBytes byte:len="+keyOrgBytes.length+",content="+Arrays.toString(keyOrgBytes));
 		byte[] key = coder.genEncKey(keyOrg.getBytes(charset));
 		System.out.println("enckey byte:len="+key.length+",content="+Arrays.toString(key));
-		System.out.println("enckey str:"+new String(key)); 
+//		System.out.println("enckey str:"+new String(key)); 
 		
 //		System.out.println("enckeyOrg Str:"+enckeyOrg);	
 //		byte[] enckey2= {33, -49, -77, 49, 106, -5, -99, 0, -5, -72};//保存KEY
