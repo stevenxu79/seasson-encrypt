@@ -143,7 +143,7 @@ public class EncryptJar {
 		}
 		// 创建目录
 		if (dir.mkdirs()) {
-			System.out.println("创建目录" + destDirName + "成功！");
+//			System.out.println("创建目录" + destDirName + "成功！");
 			return true;
 		} else {
 			System.out.println("创建目录" + destDirName + "失败！");
@@ -156,7 +156,7 @@ public class EncryptJar {
         if(file.isFile() && file.exists()){
             Boolean succeedDelete = file.delete();
             if(succeedDelete){
-                System.out.println("删除单个文件"+fileName+"成功！");
+//                System.out.println("删除单个文件"+fileName+"成功！");
                 return true;
             }
             else{
@@ -208,7 +208,7 @@ public class EncryptJar {
 
         //删除当前目录
         if(dirFile.delete()){
-            System.out.println("删除目录"+dir+"成功！");
+//            System.out.println("删除目录"+dir+"成功！");
             return true;
         }else{
             System.out.println("删除目录"+dir+"失败！");
@@ -271,9 +271,9 @@ public class EncryptJar {
 						byte[] bytes_tmp;
 						
 						if ((name.indexOf(springClass) != -1) || (name.indexOf(springClass2)) != -1) {
-							System.out.println("spring replace class2:" + name);
+//							System.out.println("spring replace class2:" + name);
 							String readFileName="rpl/classes/"+name;
-							System.out.println("readFile="+readFileName);
+//							System.out.println("readFile="+readFileName);
 							File readFile=new File(readFileName);
 							bytes_tmp=getFileBytes(readFile);
 //							System.err.println("read len2="+bytes_tmp.length);
@@ -321,7 +321,7 @@ public class EncryptJar {
 
 					String tmpFile = name.substring(name.lastIndexOf("/") + 1);
 					String tmp_src_name = tmpDir + "/" + tmpFile;
-					System.err.println("tmp_src_name=" + tmp_src_name);
+//					System.err.println("tmp_src_name=" + tmp_src_name);
 					File tmpJarFile_src = new File(tmp_src_name);
 					// 将实体流写入本地临时文件
 					inputStreamToFile(is, tmpJarFile_src);
@@ -433,11 +433,11 @@ public class EncryptJar {
 		//调用动态库加密和解密
 		//1.获得密钥
 		String keyOrg="suichaojar";
-		System.out.println("enckeyOrg Str:"+keyOrg);	
+//		System.out.println("enckeyOrg Str:"+keyOrg);	
 		byte[] keyOrgBytes=keyOrg.getBytes(charset);
-		System.out.println("keyOrgBytes byte:len="+keyOrgBytes.length+",content="+Arrays.toString(keyOrgBytes));
+//		System.out.println("keyOrgBytes byte:len="+keyOrgBytes.length+",content="+Arrays.toString(keyOrgBytes));
 		byte[] key = coder.genEncKey(keyOrg.getBytes(charset));
-		System.out.println("enckey byte:len="+key.length+",content="+Arrays.toString(key));
+//		System.out.println("enckey byte:len="+key.length+",content="+Arrays.toString(key));
 //		System.out.println("enckey str:"+new String(key)); 
 		
 //		System.out.println("enckeyOrg Str:"+enckeyOrg);	
