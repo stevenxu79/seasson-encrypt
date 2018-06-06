@@ -60,6 +60,9 @@ public class EncryptJar {
 	
 	static String springJar = "spring-core";
 	static String suichaoJar="microservice-";
+	static String suichaoJar2="suichao-";
+	static String suichaoJar3="etl_tools-";
+	
 	static String hibernateJar = "hibernate-core";
 	static String hibernateClass ="ClassFileArchiveEntryHandler";
 	// 获取参数
@@ -124,7 +127,7 @@ public class EncryptJar {
 				}
 			}
 			if (name.endsWith(".jar")) {
-				if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1 || name.indexOf(hibernateJar) != -1) {
+				if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1 || name.indexOf(suichaoJar2) != -1 || name.indexOf(suichaoJar3) != -1|| name.indexOf(hibernateJar) != -1) {
 					return true;
 				}
 			}
@@ -363,7 +366,13 @@ public class EncryptJar {
 
 			} else {
 				// System.out.println("no encrypt " + name);
-				dst_jar.putNextEntry(entry);
+				if(name.indexOf("META-INF/maven/com.seassoon/etl_tools") != -1) {
+					JarEntry ne = new JarEntry(name+System.currentTimeMillis() );
+					dst_jar.putNextEntry(ne);
+				}else {
+					dst_jar.putNextEntry(entry);
+				}
+				
 				BufferedInputStream is = new BufferedInputStream(src_jar.getInputStream(entry));
 				int len;
 				while ((len = is.read(buf, 0, buf.length)) != -1) {
