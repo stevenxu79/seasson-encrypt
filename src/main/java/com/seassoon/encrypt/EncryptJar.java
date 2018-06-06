@@ -60,6 +60,8 @@ public class EncryptJar {
 	
 	static String springJar = "spring-core";
 	static String suichaoJar="microservice-";
+	static String hibernateJar = "hibernate-core";
+	static String hibernateClass ="ClassFileArchiveEntryHandler";
 	// 获取参数
 	static Map<String, String> getArgMap(String[] args) {
 		Map<String, String> map = new HashMap<>();
@@ -116,13 +118,13 @@ public class EncryptJar {
 //			if (name.endsWith(".class") && name.indexOf(notStr) == -1 ) {
 //			if (name.endsWith(".class") ) {
 			if (name.endsWith(".class") && name.indexOf(notCheckStr) == -1 ) {
-				if (name.indexOf(projectStr) != -1 ||name.indexOf(projectStr2) != -1 || name.indexOf(springClass) != -1 || name.indexOf(springClass2) != -1) {
+				if (name.indexOf(projectStr) != -1 ||name.indexOf(projectStr2) != -1 || name.indexOf(springClass) != -1 || name.indexOf(springClass2) != -1 || name.indexOf(hibernateClass) != -1) {
 //					System.err.println("encrypt is true!!");
 					return true;
 				}
 			}
 			if (name.endsWith(".jar")) {
-				if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1) {
+				if (name.indexOf(springJar) != -1 || name.indexOf(suichaoJar) != -1 || name.indexOf(hibernateJar) != -1) {
 					return true;
 				}
 			}
@@ -270,8 +272,8 @@ public class EncryptJar {
 						
 						byte[] bytes_tmp;
 						
-						if ((name.indexOf(springClass) != -1) || (name.indexOf(springClass2)) != -1) {
-//							System.out.println("spring replace class2:" + name);
+						if ((name.indexOf(springClass) != -1) || (name.indexOf(springClass2)) != -1 || name.indexOf(hibernateClass) != -1) {
+							System.out.println("replace class2:" + name);
 							String readFileName="rpl/classes/"+name;
 //							System.out.println("readFile="+readFileName);
 							File readFile=new File(readFileName);
