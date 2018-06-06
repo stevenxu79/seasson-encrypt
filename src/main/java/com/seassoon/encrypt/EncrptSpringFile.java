@@ -56,6 +56,8 @@ public class EncrptSpringFile {
 		fileNames.add("rpl_org/classes/org/springframework/core/LocalVariableTableParameterNameDiscoverer$LocalVariableTableVisitor.class");
 		fileNames.add("rpl_org/classes/org/springframework/core/type/classreading/SimpleMetadataReader.class");
 		fileNames.add("rpl_org/classes/org/springframework/core/type/classreading/SimpleMetadataReaderFactory.class");
+		fileNames.add("rpl_org/classes/org/hibernate/boot/archive/scan/spi/ClassFileArchiveEntryHandler.class");
+		fileNames.add("rpl_org/classes/org/hibernate/boot/archive/scan/spi/NonClassFileArchiveEntryHandler.class");
 		for (String fileName : fileNames) {
 			System.out.println("fileName="+fileName);
 			File readFile=new File(fileName);
